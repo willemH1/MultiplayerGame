@@ -4,18 +4,20 @@ using UnityEngine;
 using Mirror;
 public class Player : NetworkBehaviour
 {
-    public float movementSpeed = 5f;
+    public CharacterController controller;
+    public float speed = 12f;
     void HandleMovement()
     {
         if (isLocalPlayer)
         {
-            float moveHorizontal = Input.GetAxis("Horizontal");
-            float moveVertical = Input.GetAxis("Vertical");
-            Vector3 movement = new Vector3(moveHorizontal, moveVertical, 0);
-            transform.position = transform.position + movement * movementSpeed;
+            float x = Input.GetAxis("Horizontal");
+            float z = Input.GetAxis("Vertical");
+
+            Vector3 move = transform.right * x + transform.forward * z;
+            controller.Move(move * speed * Time.deltaTime);
         }
     }
-    private void Update()
+    void Update()
     {
         HandleMovement();
     }
