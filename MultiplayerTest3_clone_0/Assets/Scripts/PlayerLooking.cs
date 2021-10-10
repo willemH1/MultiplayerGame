@@ -14,8 +14,9 @@ public class PlayerLooking : MonoBehaviour
         
         
             Cursor.lockState = CursorLockMode.Locked;
-        
-       
+        OnStartClient();
+
+
 
     }
 
@@ -39,4 +40,13 @@ public class PlayerLooking : MonoBehaviour
         
         
     }
+    public void OnStartClient()
+    {
+        if (!this.transform.parent.GetComponent<Player>().isLocalPlayer)
+        {
+            gameObject.GetComponent<Camera>().enabled = false;
+            gameObject.GetComponent<AudioListener>().enabled = false;
+        }
+    }
+    
 }
