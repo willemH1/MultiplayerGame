@@ -21,8 +21,11 @@ public class HoldToPickup : MonoBehaviour
 	[SerializeField]
 	[Tooltip("The ring around the button that fills")]
 	private Image pickupProgressImage;
-
-
+	[SerializeField]
+	private AudioSource pickUpItemSound;
+	[SerializeField]
+	private ParticleSystem pickUpParticle;
+	private bool isGiftPickedUp;
 	private Item itemBeingPickedUp;
 	private float currentPickupTimerElapsed;
 
@@ -62,10 +65,44 @@ public class HoldToPickup : MonoBehaviour
 		currentPickupTimerElapsed += Time.deltaTime;
 		if (currentPickupTimerElapsed >= pickupTime)
 		{
-			OpenMultiplayerLobbySystem();
+			if(itemBeingPickedUp.gameObject.layer == 10)
+            {
+				playGrampophone();
+			}
+			else if(itemBeingPickedUp.gameObject.layer == 11)
+            {
+				
+				OpenMultiplayerLobbySystem();
+
+			}
+            else if(itemBeingPickedUp.gameObject.layer == 12 && isGiftPickedUp == false)
+            {
+				if(isGiftPickedUp == false)
+                {
+					pickUpGift();
+                }
+            }
 		}
 	}
-
+	private void pickUpGift()
+    {
+		isGiftPickedUp = true;
+		pickUpParticle.Play();
+		pickUpItemSound.Play();
+		itemBeingPickedUp.GetComponentInChildren<ParticleSystem>().Stop();
+		itemBeingPickedUp.GetComponentInChildren<Light>().gameObject.SetActive(false);
+		itemBeingPickedUp.GetComponentInChildren<AudioSource>().Stop();
+        switch (itemBeingPickedUp.GetComponent<Item>().giftNumber)
+        {
+			case 1:
+				PlayerPrefs.SetInt("Gift01", 1);
+				Debug.Log("gift 1 picked up !!");
+				break;
+        }
+	    
+		currentPickupTimerElapsed = 0f;
+		pickupProgressImage.fillAmount = 0f;
+	}
 	private void UpdatePickupProgressImage()
 	{
 		float pct = currentPickupTimerElapsed / pickupTime;
@@ -78,7 +115,7 @@ public class HoldToPickup : MonoBehaviour
 		Debug.DrawRay(ray.origin, ray.direction * 2f, Color.red);
 
 		RaycastHit hitInfo;
-		if (Physics.Raycast(ray, out hitInfo, 2f, layerMask))
+		if (Physics.Raycast(ray, out hitInfo, 4f, layerMask))
 		{
 			
 			var hitItem = hitInfo.collider.GetComponent<Item>();
@@ -103,5 +140,12 @@ public class HoldToPickup : MonoBehaviour
 	private void OpenMultiplayerLobbySystem()
 	{
 		SceneManager.LoadScene(1);
+	}
+	private void playGrampophone()
+    {
+		
+		currentPickupTimerElapsed = 0f ;
+		pickupProgressImage.fillAmount = 0f;
+		FindObjectOfType<AudioManager>().playGramophone();
 	}
 }

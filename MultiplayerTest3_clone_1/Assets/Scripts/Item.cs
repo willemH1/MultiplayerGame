@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
+    
+    public int giftNumber;
     // Start is called before the first frame update
     void Start()
     {
