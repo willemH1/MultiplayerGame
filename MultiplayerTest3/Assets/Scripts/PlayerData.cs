@@ -13,10 +13,6 @@ public class PlayerData : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if((PlayerPrefs.GetInt("Gift01", 1)) != 0)
-        {
-            Debug.Log("package picked up and savesd");
-        }
-        Debug.Log(PlayerPrefs.GetInt("Gift01", 0));
+      
     }
 }

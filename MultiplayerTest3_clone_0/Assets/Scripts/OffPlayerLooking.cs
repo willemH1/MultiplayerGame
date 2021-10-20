@@ -13,7 +13,7 @@ public class OffPlayerLooking : MonoBehaviour
 
 
         Cursor.lockState = CursorLockMode.Locked;
-        
+        Cursor.visible = false;
 
 
 

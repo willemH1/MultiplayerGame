@@ -64,7 +64,7 @@ public class OffPlayer : MonoBehaviour
     void UpdateWalkingSounds()
     {
         Collider[] hitColliders = Physics.OverlapSphere(groundCheck.position, 2f, groundMask);
-        Debug.Log(hitColliders[0].tag);
+
         if (hitColliders[0].tag == "Wood")
         {
             if(WalkingSoundSnow.clip == walkingSounds[0])
@@ -93,7 +93,7 @@ public class OffPlayer : MonoBehaviour
     void Update()
     {
 
-        Debug.Log(isGrounded);
+ 
         UpdateWalkingSounds();
         HandleMovement();
     }

@@ -75,31 +75,37 @@ public class HoldToPickup : MonoBehaviour
 				OpenMultiplayerLobbySystem();
 
 			}
-            else if(itemBeingPickedUp.gameObject.layer == 12 && isGiftPickedUp == false)
+            else if(itemBeingPickedUp.gameObject.layer == 12)
             {
-				if(isGiftPickedUp == false)
-                {
+				
+                
 					pickUpGift();
-                }
+                
             }
 		}
 	}
+	public string GetGiftNumber()
+    {
+		return itemBeingPickedUp.gameObject.name;
+    }
 	private void pickUpGift()
     {
-		isGiftPickedUp = true;
-		pickUpParticle.Play();
-		pickUpItemSound.Play();
-		itemBeingPickedUp.GetComponentInChildren<ParticleSystem>().Stop();
-		itemBeingPickedUp.GetComponentInChildren<Light>().gameObject.SetActive(false);
-		itemBeingPickedUp.GetComponentInChildren<AudioSource>().Stop();
-        switch (itemBeingPickedUp.GetComponent<Item>().giftNumber)
+
+
+		FindObjectOfType<Item>().pickUpGift();
+		switch (FindObjectOfType<Item>().giftNumber)
         {
 			case 1:
-				PlayerPrefs.SetInt("Gift01", 1);
+				PlayerPrefs.SetString("Gift01", "Y");
 				Debug.Log("gift 1 picked up !!");
 				break;
-        }
-	    
+			case 2:
+				PlayerPrefs.SetString("Gift02", "Y");
+				Debug.Log("gift 2 picked up !!");
+				break;
+		}
+		
+
 		currentPickupTimerElapsed = 0f;
 		pickupProgressImage.fillAmount = 0f;
 	}
